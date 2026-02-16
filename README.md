@@ -62,7 +62,7 @@ ml-ddos is the root git directory and has the following:
 
 ### Initial exploration
 
-<mark>**Background**</mark>: The data files downloaded from the CICDDoS2019 dataset has the attack data divided by protocols. The approach that was taken was to generate simulated attack data for protocols: DNS, LDAP, MSSQL, NetBIOS, NTP, SNMP, SSDP, UDP, TCP/Syn, TFTP. Features (88 in number) were aggregated from this data (some of the columns are generated) based on the flows which are identified by quintuble <Src IP Address, Destination IP Address, Src Port, Destination Port, Protocol>
+<mark>**==Background==**</mark>: The data files downloaded from the CICDDoS2019 dataset has the attack data divided by protocols. The approach that was taken was to generate simulated attack data for protocols: DNS, LDAP, MSSQL, NetBIOS, NTP, SNMP, SSDP, UDP, TCP/Syn, TFTP. Features (88 in number) were aggregated from this data (some of the columns are generated) based on the flows which are identified by quintuble <Src IP Address, Destination IP Address, Src Port, Destination Port, Protocol>
 
 Some observations from initial exploration and the actions taken (this is in the capstone_ddos_RS.ipynb notebook)
 
