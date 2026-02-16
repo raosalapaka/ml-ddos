@@ -171,5 +171,6 @@ Several items still need to be done:
 - find an approach to generalize the estimators to other protocol data
 - analyze other protocols data with estimators
 - fine tune with gridsearch to get better results
+- Organize git directory better for this project
 
 
