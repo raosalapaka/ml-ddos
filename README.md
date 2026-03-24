@@ -19,19 +19,19 @@ The dataset used for this analysis is the [CICDDoS2019 dataset](http://cicresear
 ## Github directory structure
 ml-ddos is the root git directory and has the following:
 
-**Screenshots**: directory has the screenshots that are used in this file (README.md)
+- **Screenshots**: directory has the screenshots that are used in this file (README.md)
 
-**archive**: directory has the previously uploaded README version with its Screenshots
+- **archive**: directory has the previously uploaded README version with its Screenshots
 
-**data/CICDDoS2019/sampled_data**: has the data files split in chunks of 3 files for each protocol. This is done to work around the size constraints of git storage
+- **data/CICDDoS2019/sampled_data**: has the data files split in chunks of 3 files for each protocol. This is done to work around the size constraints of git storage
 
-**README.md** file: this file
+- **README.md** file: this file
 
-**capstone_ddos_data_RS.ipynb**: this is the notebook that does initial data analysis of the files in CICDDoS2019 dataset. The output from this notebook is sampled data for each protocol to constrain the number of data rows to be more manageable for both git and the analysis
+- **capstone_ddos_data_RS.ipynb**: this is the notebook that does initial data analysis of the files in CICDDoS2019 dataset. The output from this notebook is sampled data for each protocol to constrain the number of data rows to be more manageable for both git and the analysis
 
-**capstone_ddos_project_RS.ipynb**: this notebook has the analysis to compare different estimators and choose the best estimator for the DDoS detection project
+- **capstone_ddos_project_RS.ipynb**: this notebook has the analysis to compare different estimators and choose the best estimator for the DDoS detection project
 
-**ddos_dataset_and_taxonomy.pdf**: paper describing the datset used in this project
+- **ddos_dataset_and_taxonomy.pdf**: paper describing the datset used in this project
 
 
 
