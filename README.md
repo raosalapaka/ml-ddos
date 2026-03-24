@@ -6,7 +6,7 @@ Link to repository: [Git Repository](https://github.com/raosalapaka/ml-ddos.git)
 
 Link to github: [Github](https://github.com/raosalapaka/ml-ddos)
 
-Link to jupyter notebook: [Capstone DDoS Project](https://github.com/raosalapaka/ml-ddos/blob/main/capstone_ddos_RS.ipynb), [Capstone DDoS LDAP](https://github.com/raosalapaka/ml-ddos/blob/main/capstone_ddos_ldap.ipynb)
+Link to jupyter notebook: [Capstone DDoS Data](https://github.com/raosalapaka/ml-ddos/blob/main/capstone_ddos_data_RS.ipynb), [Capstone DDoS Project](https://github.com/raosalapaka/ml-ddos/blob/main/capstone_ddos_project_RS.ipynb)
 
 Following datasets were considered for this project:
 - [Kaggle comprehensive dataset for ddos attack](https://www.kaggle.com/datasets/amanverma1999/a-comprehensive-dataset-for-ddos-attack)
