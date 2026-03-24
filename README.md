@@ -13,7 +13,7 @@ Following datasets were considered for this project:
 - [Kaggle ddos dataset](https://www.kaggle.com/datasets/devendra416/ddos-datasets)
 - [CICDDoS2019 dataset](http://cicresearch.ca//CICDataset/CICDDoS2019/)
 
-The dataset used for this analysis is the [CICDDoS2019 dataset](http://cicresearch.ca//CICDataset/CICDDoS2019/) which is provided by the [Canadian Institute of Cybersecurity, University of New Brunswick](https://www.unb.ca/cic/datasets/ddos-2019.html). The main reason was the richness of various features that were captured in simulated attacks on many different network protocols (like LDAP, NetBIOS, UDP, Syn/TCP, NTP, etc.). A good analysis on how the data was generated and the taxonomy is captured in this paper: [Developing Realistic Distributed Denial of Service DDoS Attack Dataset and Taxonomy](https://www.researchgate.net/profile/Arash-Habibi-Lashkari/publication/336953914_Developing_Realistic_Distributed_Denial_of_Service_DDoS_Attack_Dataset_and_Taxonomy/links/5de66c9592851c83645fad89/Developing-Realistic-Distributed-Denial-of-Service-DDoS-Attack-Dataset-and-Taxonomy.pdf)
+The dataset used for this analysis is the [CICDDoS2019 dataset](http://cicresearch.ca//CICDataset/CICDDoS2019/) which is provided by the [Canadian Institute of Cybersecurity, University of New Brunswick](https://www.unb.ca/cic/datasets/ddos-2019.html). The main reason was the richness of various features that were captured in simulated attacks on many different network protocols (like LDAP, NetBIOS, UDP, Syn/TCP, NTP, etc.). Another reason was that each row is self contained with a flowID that captures information from a sequence of packets and constructs the features based on that. A good analysis on how the data was generated and the taxonomy is captured in this paper: [Developing Realistic Distributed Denial of Service DDoS Attack Dataset and Taxonomy](https://www.researchgate.net/profile/Arash-Habibi-Lashkari/publication/336953914_Developing_Realistic_Distributed_Denial_of_Service_DDoS_Attack_Dataset_and_Taxonomy/links/5de66c9592851c83645fad89/Developing-Realistic-Distributed-Denial-of-Service-DDoS-Attack-Dataset-and-Taxonomy.pdf)
 
 
 ## Github directory structure
@@ -84,12 +84,12 @@ ml-ddos is the root git directory and has the following:
 
 ### Initial exploration
 
-<mark>**Background**</mark>: The data files downloaded from the CICDDoS2019 dataset has the attack data divided by protocols. The approach that was taken was to generate simulated attack data for protocols: DNS, LDAP, MSSQL, NetBIOS, NTP, SNMP, SSDP, UDP, TCP/Syn, TFTP. Features (88 in number) were aggregated from this data (some of the columns are generated) based on the flows which are identified by quintuble <Src IP Address, Destination IP Address, Src Port, Destination Port, Protocol>
+**Background**: The data files downloaded from the CICDDoS2019 dataset has the attack data divided by protocols. The approach that was taken was to generate simulated attack data for protocols: DNS, LDAP, MSSQL, NetBIOS, NTP, SNMP, SSDP, UDP, TCP/Syn, TFTP. Features (88 in number) were aggregated from this data (some of the columns are generated) based on the flows which are identified by quintuble <Src IP Address, Destination IP Address, Src Port, Destination Port, Protocol>
 
-Some observations from initial exploration and the actions taken (this is in the capstone_ddos_RS.ipynb notebook)
+Some observations from initial exploration and the actions taken (this is in the [capstone_ddos_RS.ipynb notebook](https://github.com/raosalapaka/ml-ddos/blob/main/capstone_ddos_data_RS.ipynb)
 
-- The raw files for each protocol were huge with millions of rows making it not practical to analyze with compute resources available. ***Action taken***: The rows were read from each protocol file, 200_000 rows at a time. The data frame lists were sampled so that each protocol had 300_000 rows for analysis. The sampled data was further split into 3 files of approximated 100_000 rows to take care of git storage constraints
-- Since the attack rows were genereated using automation and the normal BENIGN data was generated manually, the data for each file was very attack heavy, rows identified as attack flows were dominating (almost o99% of total rows). ***Action Taken***: Aggregated BENGIGN rows from each protocol dataset and used the aggregated rows to analyze the data for each protocol. This resulted in BENIGN rows to be approximately 25% of total rows
+- The raw files for each protocol were huge with millions of rows making it not practical to analyze with compute resources available. ***Action taken***: The rows were read from each protocol file, 200_000 rows at a time. The data frame lists were sampled so that each protocol had 300_000 rows for analysis. The sampled data was further split into 3 files of approximately 85_000 rows to take care of git storage constraints
+- Since the attack rows were genereated using automation and the normal BENIGN data was generated manually, the data in each file was skewed a lot towards attack data, meaning rows identified as attack flows were dominating (almost o99% of total rows). ***Action Taken***: Aggregated BENIGN rows from each protocol dataset and used the aggregated rows to analyze the data for each protocol. This resulted in BENIGN rows to be approximately 25% of total rows
 
     ![alt text](Screenshots/image-5.png)
 
@@ -98,7 +98,7 @@ Some observations from initial exploration and the actions taken (this is in the
 
 ### Data Preparation
 
-For the initial analysis, LDAP data was analyzed. Following steps were taken to prepare the data
+For the initial analysis. following steps were taken to prepare the data
 
 - On analyzing the features, following columns were dropped (reasons explained)
     - **Source IP, Destination IP**: Since the rows were aggregated by flow ids which include these in the quintuple, the specific IP Addresses by themselves do not provide any signal
@@ -107,9 +107,10 @@ For the initial analysis, LDAP data was analyzed. Following steps were taken to 
     - **Timestamp**: For now only static analysis is being done, meaning there is no real-time detection of the attacks. Timestamp will be used in future when features like bursty traffic, etc. can be analyzed to do real time detection using time series data
     - **Unnamed**: this is again an id that seems to be left behind in the dataset and does not provide any signal
 
-- Analyzed the data further by looking at the correlation coefficients of different columns on the target column ('Label'). Following figure visualizes the correlation coefficients:
+- Analyzed the data further by looking at the correlation coefficients of different columns with the target column ('Label'). Following figure visualizes the correlation coefficients:
 
     ![alt text](Screenshots/image-1.png)
+  
 
  - Looked at the columns which has high correlation coefficients (>0.5) and found the following columns as hight correlated (positively or negatively) with the target and also should be dropped for better generalization:
     - **Inbound**: this column indicates the direction of the flow. Most of the attack data is marked as inbound and the BENIGN rows were marked as not Inbound. This makes sense as the attack data was generated using automation
@@ -122,16 +123,16 @@ For the initial analysis, LDAP data was analyzed. Following steps were taken to 
 
 ### Modeling
 
-Following classifiers were evaluated for detecting DDoS attackes (with the hyper parameters for each estimator):
+Following classifiers were evaluated for detecting DDoS attackes (with the hyper parameters for each estimator). The reason to select the following classifiers were to make sure we include Bagging and Boosting classifiers. LogisticRegression was included to create a base metrics for analysis:
 
                
- - LogisticRegression: ({'lgr__penalty': ['l2'], 'lgr__C': [0.01, 0.1, 1, 10]})
- - BaggingClassifier: ({'n_estimators': [5, 10, 15], 'max_samples': [0.4, 0.7, 1.0]})
- - RandomForestClassifier: ({'n_estimators': [50, 100, 150], 'max_depth': [5, 10, 100]})
- - AdaBoostClassifier: ({'n_estimators': [25, 50, 75], 'learning_rate': [0.6, 0.8, 1.0]})
- - GrandientBoostingClassifier: ({'n_estimators': [50, 100, 150], 'learning_rate': [0.01, 0.1, 0.5]})
+ - **LogisticRegression**: ({'lgr__penalty': ['l2'], 'lgr__C': [0.01, 0.1, 1, 10]})
+ - **BaggingClassifier**: ({'n_estimators': [5, 10, 15], 'max_samples': [0.4, 0.7, 1.0]})
+ - **RandomForestClassifier**: ({'n_estimators': [50, 100, 150], 'max_depth': [5, 10, 100]})
+ - **AdaBoostClassifier**: ({'n_estimators': [25, 50, 75], 'learning_rate': [0.6, 0.8, 1.0]})
+ - **GrandientBoostingClassifier**: ({'n_estimators': [50, 100, 150], 'learning_rate': [0.01, 0.1, 0.5]})
 
-The estimators were trained with 75% of the available data and tested for accuracy with 25%. The data was scaled with StandardScaler for LogisticRegression estimator
+The estimators were trained cross validation and GridSearch with 5 cross validation folds. The data was scaled with StandardScaler for LogisticRegression estimator
 
 All estimators did very well with this data (with accuracy > 99.8%). Following table provides a summary of the results (sorted on descending accuracy)
 
@@ -177,11 +178,11 @@ As is clear from the above figure, Bagging Classifier performed best with best r
 - Recall: 0.999954 
 - Tuned hyper Parameters: {'max_samples': 1.0, 'n_estimators': 15}
 
-Also:
+Some caveats and fodder for future work:
 
 - The data seems to be highly separable on the features captured in the dataset
 - Precision/Recall is almost perfect
-- The above could more training could be needed to generalize of real traffic (the challenge here is to actually find DDoS attack data that is real)
+- More training could be needed to generalize for real traffic (the challenge here is to actually find DDoS attack data that is real)
 
 ### Deployment
 
@@ -189,7 +190,7 @@ The ensemble classifiers which performed the best identified the following as th
 
 ![alt text](Screenshots/image-4.png)
 
-From above, the following features had the most impact on the target which classifies if the flow was a DDoS attack or normal BENIGN traffic. Note that some of features like source/destination ports are protocol specific and excluded from the analysis below:
+From above, the following features had the most impact on the target which classifies if the flow was a DDoS attack or normal BENIGN traffic. Note that some of features like source/destination ports are protocol specific and excluded from the analysis below as they only identify the protocol and does not provide strong signal for importance:
 
 - **Min Packet Length**: this indicates the minimum length of packets in a flow. The flows have a larger length to take up the processing resource of the target machine during attack
 - **Active Min**: this specifies the minimum time that the flow was active. The attack flows have a small Active Min, perhaps to minimize the available window of time for any action could be taken by the victim
