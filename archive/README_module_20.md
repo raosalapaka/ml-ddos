@@ -87,8 +87,8 @@ Some observations from initial exploration and the actions taken (this is in the
 - The raw files for each protocol were huge with millions of rows making it not practical to analyze with compute resources available. ***Action taken***: The rows were read from each protocol file, 200_000 rows at a time. The data frame lists were sampled so that each protocol had 300_000 rows for analysis. The sampled data was further split into 3 files of approximated 100_000 rows to take care of git storage constraints
 - Since the attack rows were genereated using automation and the normal BENIGN data was generated manually, the data for each file was very attack heavy (almost only 1% of total rows). ***Action Taken***: Aggregated BENGIGN rows from each protocol dataset and used the aggregated rows to analyze the data for each protocol. This resulted in BENIGN rows to be approximately 18% of total rows
 
-    ![alt text]("../Screenshots/Screenshot%202026-02-15%20at%207.50.41%20PM.png")
-    
+    ![alt text](Screenshots//Screenshot%202026-02-15%20at%207.50.41 PM.png)
+   
 
 - Some of the columns had white space which was removed to clean up the data
 - Mostly there were no missing values.
@@ -121,7 +121,7 @@ The estimators were trained with 75% of the available data and tested for accura
 
 All estimators did very well with this data. Following table gives a summary of the results (sorted on descending accuracy)
 
-![alt text](../Screenshots/Screenshot%202026-02-15%20at%209.08.06 PM.png)
+![alt text](Screenshots/Screenshot%202026-02-15%20at%209.08.06 PM.png)
 
 ### Evaluation
 
@@ -132,17 +132,16 @@ Following metrics were considered while evaluating the estimators:
 - precision recall
 
 Results:
-
 - All classifiers performed very well (>99.9% accuracy). 
 - BaggingClassifier and RandomForests performed slightly better
 
 Following shows the confusion matrices and the roc-auc and precision-recall curves for the different estimators
 
-![alt text]("../Screenshots/Screenshot 2026-02-15 at 9.14.54 PM.png")
+![alt text](Screenshots/Screenshot%202026-02-15%20at%209.14.54 PM.png)
 
 Following shows the scores and plot comparing the scores for the different estimators
 
-![alt text]("../Screenshots/Screenshot 2026-02-15 at 9.16.24 PM.png")
+![alt text](Screenshots/Screenshot%202026-02-15%20at%209.16.24 PM.png)
 
 Conclusions:
 
@@ -154,17 +153,17 @@ To test, ran the model against test data generated from a different protocol fil
 
 Result of the estimators trained on ldap protocol when run on DNS, slightly worse results with best accuracy ~96%:
 
-![alt text]("../Screenshots/Screenshot 2026-02-15 at 9.52.54 PM.png")
+![alt text](Screenshots/Screenshot%202026-02-15%20at%209.52.54 PM.png")
 
 Result of the estimators trained on ldap protocol and when on UDPLag, very bad results - with best accuracy ~25%:
 
-![alt text]("Screenshots/Screenshot 2026-02-15 at 9.53.51 PM.png")
+![alt text](Screenshots/Screenshot%202026-02-15%20at%209.53.51 PM.png)
 
 ### Deployment
 
 The ensemble classifiers which performed the best identified the following as the most important features:
 
-![alt text]("../Screenshots/Screenshot 2026-02-15 at 9.45.26 PM.png")
+![alt text](Screenshots/Screenshot%202026-02-15%20at%209.45.26 PM.png)
 
 ### Future work
 
