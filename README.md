@@ -13,7 +13,7 @@ Following datasets were considered for this project:
 - [Kaggle ddos dataset](https://www.kaggle.com/datasets/devendra416/ddos-datasets)
 - [CICDDoS2019 dataset](http://cicresearch.ca//CICDataset/CICDDoS2019/)
 
-The dataset used for this analysis is the [CICDDoS2019 dataset](http://cicresearch.ca//CICDataset/CICDDoS2019/) which is provided by the [Canadian Institute of Cybersecurity, University of New Brunswick](https://www.unb.ca/cic/datasets/ddos-2019.html). The main reason was the richness of various features that were captured in simulated attacks on many different network protocols (like LDAP, NetBIOS, UDP, Syn/TCP, NTP, etc.). Another reason was that each row is self contained with a flowID that captures information from a sequence of packets and constructs the features based on that. A good analysis on how the data was generated and the taxonomy is captured in this paper: [Developing Realistic Distributed Denial of Service DDoS Attack Dataset and Taxonomy](https://www.researchgate.net/profile/Arash-Habibi-Lashkari/publication/336953914_Developing_Realistic_Distributed_Denial_of_Service_DDoS_Attack_Dataset_and_Taxonomy/links/5de66c9592851c83645fad89/Developing-Realistic-Distributed-Denial-of-Service-DDoS-Attack-Dataset-and-Taxonomy.pdf)
+The dataset used for this analysis is the [CICDDoS2019 dataset](http://cicresearch.ca//CICDataset/CICDDoS2019/) which is provided by the [Canadian Institute of Cybersecurity, University of New Brunswick](https://www.unb.ca/cic/datasets/ddos-2019.html). [CICFlowMeter](https://pypi.org/project/cicflowmeter/) tool was used to convert network pcap files to csv files with flows. The main reason was the richness of various features that were captured in simulated attacks on many different network protocols (like LDAP, NetBIOS, UDP, Syn/TCP, NTP, etc.). Another reason was that each row is self contained with a flowID that captures information from a sequence of packets and constructs the features based on that. A good analysis on how the data was generated and the taxonomy is captured in this paper: [Developing Realistic Distributed Denial of Service DDoS Attack Dataset and Taxonomy](https://www.researchgate.net/profile/Arash-Habibi-Lashkari/publication/336953914_Developing_Realistic_Distributed_Denial_of_Service_DDoS_Attack_Dataset_and_Taxonomy/links/5de66c9592851c83645fad89/Developing-Realistic-Distributed-Denial-of-Service-DDoS-Attack-Dataset-and-Taxonomy.pdf)
 
 
 ## Github directory structure
@@ -70,7 +70,7 @@ ml-ddos is the root git directory and has the following:
     - The estimators all performed well on the test data. The test data was collected by using the attack/normal traffic from unseen sampled data files (new for the trained models)
     - Precision was almost perfect - likely because of the large numbers of rows skewed to attack data
 
-- [Deployment](#Deployment)
+- [Deployment and Recommendations](#Deployment-and-Recommendations)
     - best model was Bagging and RandomForest classifiers
     - Deployment section identifies the important features
 
@@ -184,7 +184,7 @@ Some caveats and fodder for future work:
 - Precision/Recall is almost perfect
 - More training could be needed to generalize for real traffic (the challenge here is to actually find DDoS attack data that is real)
 
-### Deployment
+### Deployment and Recommendations
 
 The ensemble classifiers which performed the best identified the following as the most important features:
 
@@ -198,6 +198,8 @@ From above, the following features had the most impact on the target which class
 - **act_data_pkt_fwd**: this specifies the data packets that have a payload as against control packets like SYN/FIN which usually do not. This is higher for attack flows as attackers likely send data to overwhelm the i/o stack that would attempt to process the data
 - **Average Packet Size**: this specifies the average packet size in the flow. This is higher for attack flows as the attack flows would attempt to overwhelm the i/o stack of the victim
 - **min_seg_size_forward**: this indicates the minimum tcp segment size in the forward direction (attacker to victim)
+
+Recommendation is to use BaggingClassifier with the identified hyper parameters for detecting DDoS attacks
 
 ### Future work
 
