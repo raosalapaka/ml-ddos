@@ -87,7 +87,9 @@ Some observations from initial exploration and the actions taken (this is in the
 - The raw files for each protocol were huge with millions of rows making it not practical to analyze with compute resources available. ***Action taken***: The rows were read from each protocol file, 200_000 rows at a time. The data frame lists were sampled so that each protocol had 300_000 rows for analysis. The sampled data was further split into 3 files of approximated 100_000 rows to take care of git storage constraints
 - Since the attack rows were genereated using automation and the normal BENIGN data was generated manually, the data for each file was very attack heavy (almost only 1% of total rows). ***Action Taken***: Aggregated BENGIGN rows from each protocol dataset and used the aggregated rows to analyze the data for each protocol. This resulted in BENIGN rows to be approximately 18% of total rows
 
-    ![alt text](<Screenshot 2026-02-15 at 7.50.41 PM.png>)
+    ![alt text](../Screenshots/Screenshot%202026-02-15%20at%207.50.41 PM.png)
+    
+
 - Some of the columns had white space which was removed to clean up the data
 - Mostly there were no missing values.
 
