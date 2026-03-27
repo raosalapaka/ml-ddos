@@ -33,6 +33,8 @@ ml-ddos is the root git directory and has the following:
 
 - **ddos_dataset_and_taxonomy.pdf**: paper describing the datset used in this project
 
+- **saved_models**: saved fined tuned models for this project. These files can be loaded using joblib and executed directly
+
 
 
 # Classifying DDoS network attacks (Final Report)
